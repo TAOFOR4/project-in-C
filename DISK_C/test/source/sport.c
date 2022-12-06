@@ -1,0 +1,986 @@
+#include<stdio.h>
+#include<stdlib.h>
+#include<string.h>
+#include<graphics.h>
+#include<conio.h>
+#include<dos.h>
+#include<time.h>
+#include"hz.h"
+#include"loggin.h" 
+#include"draw.h"
+#include"drawpage.h"
+#include"mouse.h" 
+#include"keyboard.h" 
+#include"judge.h"
+#include"clear.h"
+#include"self.h"
+#include"happy.h"
+#include"book1.h"
+#include"scenery1.h"
+#include"voice.h"
+#include"video1.h"
+#include"sport.h"
+#include"shijiao.h"
+
+void sport_jieshuo(char address[10])
+{
+	int i=0,j=0;
+	FILE* fp;
+	char ch;
+	char title[50]=".//TXT//sport//zhuyi//";
+	char tail[5]=".txt";
+	char tranfer[400]={'\0'};
+	setbkcolor(BLACK);
+	strcat(title,address);
+	strcpy(tail,".txt");
+	strcat(title,tail);
+	if ((fp = fopen(title, "r")) == NULL)//打开对应的文件
+	{                            
+		settextstyle(TRIPLEX_FONT,HORIZ_DIR,3);
+		setcolor(RED);
+		outtextxy(0,0,"cannot open file ");
+		delay(1000);
+		getch();
+		exit(1);
+	}
+	while(!feof(fp))
+	{
+		tranfer[i]=fgetc(fp);
+		if(tranfer[i]=='1'||i==600)
+		{
+			tranfer[i]='\0';      //一边读取文件中的信息一边将信息输出出来             
+			puthz(j*22,70,tranfer,24,25,WHITE);
+			i=0;
+			j++;
+		}
+		else
+		{
+			i++;
+		}
+	}
+	fclose(fp);
+	newmouse(&MouseX,&MouseY,&press);
+}
+
+int zhuyi(int* func,int *func_sport)
+{
+	char text[40];
+	cleardevice();
+	setfillstyle(1,WHITE);
+	rectangle(20,5,100,35);
+	puthz(20,5,"返回",32,40,WHITE);
+	if(*func_sport==1)
+	{
+	strcpy(text, "yaling");
+	}
+	if(*func_sport==2)
+	{
+	strcpy(text, "jump");
+	}
+	if(*func_sport==3)
+	{
+	strcpy(text, "up");
+	}
+	if(*func_sport==4)
+	{
+	strcpy(text, "skip");
+	}
+	sport_jieshuo(text);
+	clrmous(MouseX,MouseY);
+	newmouse(&MouseX,&MouseY,&press);
+	while(1)
+	{
+		newmouse(&MouseX,&MouseY,&press);	//返回
+		if(MouseS!=0)  
+	      	MouseS=0;	
+		if(mouse_press(20,5,80,35)==2)
+		  	MouseS=1;
+		if(mouse_press(20,5,80,35)==1)
+		{
+			*func=*func_sport+14;
+			return;
+		}
+		
+	}
+	
+}
+
+
+void sport1_main(int *func,int *func_sport)
+{
+	cleardevice();
+	clrmous(MouseX,MouseY);
+	newmouse(&MouseX,&MouseY,&press);
+	bg_sport1_began();
+	setfillstyle(1,YELLOW);
+	bar(70,10,120,40);
+	puthz(75,15,"返回",24,20,LIGHTRED);
+	setfillstyle(1,YELLOW);
+	bar(180,10,230,40);
+	puthz(185,15,"播放",24,20,LIGHTRED);
+	setfillstyle(1,YELLOW);
+	bar(290,10,340,40);
+	puthz(295,15,"视频",24,20,LIGHTRED);
+	setfillstyle(1,YELLOW);
+	bar(390,10,485,40);
+	puthz(395,15,"注意事项",24,20,LIGHTRED);
+	clrmous(MouseX,MouseY);
+	newmouse(&MouseX,&MouseY,&press);
+	while(1)
+	{
+		newmouse(&MouseX,&MouseY,&press);
+		if(MouseS!=0)  
+	      	MouseS=0;	
+		if(mouse_press(390,10,485,40)==2)
+		  	MouseS=1;
+		if(mouse_press(390,10,485,40)==1)//播放动画 
+		{
+			setfillstyle(1,LIGHTRED);
+			bar(390,10,485,40);
+			puthz(395,15,"注意事项",24,20,YELLOW);
+			delay(200);
+			clrmous(MouseX,MouseY);
+			zhuyi(func,func_sport);
+			break;
+		}
+		
+		if(mouse_press(180,10,230,40)==2)
+		  	MouseS=1;
+		if(mouse_press(180,10,230,40)==1)//播放动画 
+		{
+			setfillstyle(1,LIGHTRED);
+			bar(180,10,230,40);
+			puthz(185,15,"播放",24,20,YELLOW);
+			delay(200);
+			clrmous(MouseX,MouseY);
+			setfillstyle(1,YELLOW);
+			bar(180,10,230,40);
+			puthz(185,15,"播放",24,20,LIGHTRED);
+			sport1_act();
+			break;
+		}
+		if(mouse_press(70,10,120,40)==2)
+		  	MouseS=1;
+		if(mouse_press(70,10,120,40)==1)//返回 
+		{
+			setfillstyle(1,LIGHTRED);
+			bar(70,10,120,40);
+			puthz(75,15,"返回",24,20,YELLOW);
+			*func=5;
+			return;
+		}
+	}
+}
+
+void sport1_act()
+{
+	int i=0;
+	setbkcolor(WHITE);
+	setviewport(0,0,640,480,0);
+	for (i=0;i<30;i++)
+	{
+		setfillstyle(1,BROWN);
+		setcolor(BROWN);
+		circle(320,120,35);
+		floodfill(321,121,BROWN);
+		setlinestyle(0,0,3);
+		line(320-4,155,320-4,265);
+		line(320-2,155,320-2,265);
+		line(320,155,320,265);
+		line(320+2,155,320+2,265);
+		line(320+4,155,320+4,265);//身体 
+		line(320-4,265-4,260-4,375);
+		line(320-2,265-2,260-2,375);
+		line(320,265,260,375);//左腿 
+		line(260,375,245,378);
+		line(260+2,375+2,245+2,378+2);
+		line(260-2,375-2,245-2,378-2);//左脚 
+		line(320,265,360,365);
+		line(320+2,265,360+2,365+2);
+		line(320+4,265,360+4,365+4);//右腿 
+		line(360,365,345,373);
+		line(360+2,365+2,345+2,373+2);
+		line(360-2,365-2,345-2,373-2);//右脚 
+		line(150,180-2*i,490,180-2*i);
+		line(150,180-2-2*i,490,180-2-2*i);
+		ellipse(120,180-2*i,0,360,20,30);
+		ellipse(150,180-2*i,0,360,20,30);
+		floodfill(121,181-2*i,BROWN);
+		//ellipse(150,180,0,360,20,30);
+		floodfill(161,199-2*i,BROWN);
+		ellipse(490,180-2*i,0,360,20,30);
+		ellipse(520,180-2*i,0,360,20,30);
+		floodfill(491,181-2*i,BROWN);
+		//ellipse(150,180,0,360,20,30);
+		floodfill(531,199-2*i,BROWN);//哑铃 
+		line(320,190,270-i,250-2*i);
+		line(320,190-2,270-i,250-2-2*i);
+		line(320,190+2,270-i,250+2-2*i);//左小臂 
+		line(270-i,250-2*i,240,180-2*i);
+		line(270-2-i,250-2-2*i,240-2,180-2-2*i);
+		line(270+2-i,250+2-2*i,240+2,180+2-2*i);
+		sector(240,180-2*i,20,160,15,10);//左手
+		line(320,190,370+i,250-2*i);
+		line(320,190-2,370+i,250-2-2*i);
+		line(320,190+2,370+i,250+2-2*i);//右小臂 
+		line(370+i,250-2*i,400,180-2*i);
+		line(370-2+i,250-2-2*i,400-2,180-2-2*i);
+		line(370+2+i,250+2-2*i,400+2,180+2-2*i);
+		sector(400,180-2*i,20,160,15,10);//右手
+		delay(150);
+		setfillstyle(1,WHITE);
+		bar(90,55,540,380);
+	}
+	for (i=0;i<40;i++)
+	{
+		
+		setfillstyle(1,BROWN);
+		setcolor(BROWN);
+		circle(320,120,35);
+		floodfill(321,121,BROWN);
+		setlinestyle(0,0,3);
+		line(320-4,155,320-4,265);
+		line(320-2,155,320-2,265);
+		line(320,155,320,265);
+		line(320+2,155,320+2,265);
+		line(320+4,155,320+4,265);//身体 
+		line(320-4,265-4,260-4,375);
+		line(320-2,265-2,260-2,375);
+		line(320,265,260,375);//左腿 
+		line(260,375,245,378);
+		line(260+2,375+2,245+2,378+2);
+		line(260-2,375-2,245-2,378-2);//左脚 
+		line(320,265,360,365);
+		line(320+2,265,360+2,365+2);
+		line(320+4,265,360+4,365+4);//右腿 
+		line(360,365,345,373);
+		line(360+2,365+2,345+2,373+2);
+		line(360-2,365-2,345-2,373-2);//右脚 
+		
+		setfillstyle(1,BROWN);
+		setcolor(BROWN);
+		line(150,180-2*30-i,490,180-2*30-i);
+		line(150,180-2-2*30-i,490,180-2-2*30-i);
+		ellipse(120,180-2*30-i,0,360,20,30);
+		ellipse(150,180-2*30-i,0,360,20,30);
+		floodfill(121,181-2*30-i,BROWN);
+		//ellipse(150,180,0,360,20,30);
+		floodfill(161,199-2*30-i,BROWN);
+		ellipse(490,180-2*30-i,0,360,20,30);
+		ellipse(520,180-2*30-i,0,360,20,30);
+		floodfill(491,181-2*30-i,BROWN);
+		//ellipse(150,180,0,360,20,30);
+		floodfill(531,199-2*30-i,BROWN);//哑铃 
+		line(320,190,270-30+i,250-2*30-i);
+		line(320,190-2,270-30+i,250-2-2*30-i);
+		line(320,190+2,270-30+i,250+2-2*30-i);//左小臂 
+		line(270-30+i,250-2*30-i,240,180-2*30-i);
+		line(270-2-30+i,250-2-2*30-i,240-2,180-2-2*30-i);
+		line(270+2-30+i,250+2-2*30-i,240+2,180+2-2*30-i);
+		sector(240,180-2*30-i,20,160,15,10);//左手
+		line(320,190,370+30-i,250-2*30-i);
+		line(320,190-2,370+30-i,250-2-2*30-i);
+		line(320,190+2,370+30-i,250+2-2*30-i);//右小臂 
+		line(370+30-i,250-2*30-i,400,180-2*30-i);
+		line(370-2+30-i,250-2-2*30-i,400-2,180-2-2*30-i);
+		line(370+2+30-i,250+2-2*30-i,400+2,180+2-2*30-i);
+		sector(400,180-2*30-i,20,160,15,10);//右手
+		if(i==39)
+		{
+			puthz(300,420,"成功",24,20,RED);
+			delay(2000);
+			setfillstyle(1,WHITE);
+			bar(300,420,330,480);
+		}
+		delay(150);
+		setfillstyle(1,WHITE);
+		bar(90,55,540,380);
+	}
+}
+
+
+
+void sport2_main(int *func,int *func_sport)
+{
+	cleardevice();
+	clrmous(MouseX,MouseY);
+	newmouse(&MouseX,&MouseY,&press);
+	bg_sport2_began();
+	setfillstyle(1,YELLOW);
+	bar(70,10,120,40);
+	puthz(75,15,"返回",24,20,LIGHTRED);
+	setfillstyle(1,YELLOW);
+	bar(180,10,230,40);
+	puthz(185,15,"播放",24,20,LIGHTRED);
+	setfillstyle(1,YELLOW);
+	bar(290,10,340,40);
+	puthz(295,15,"视频",24,20,LIGHTRED);
+	setfillstyle(1,YELLOW);
+	bar(390,10,485,40);
+	puthz(395,15,"注意事项",24,20,LIGHTRED);
+	clrmous(MouseX,MouseY);
+	newmouse(&MouseX,&MouseY,&press);
+	while(1)
+	{
+		newmouse(&MouseX,&MouseY,&press);
+		if(MouseS!=0)  
+	      	MouseS=0;	
+		if(mouse_press(390,10,485,40)==2)
+		  	MouseS=1;
+		if(mouse_press(390,10,485,40)==1)//播放动画 
+		{
+			setfillstyle(1,LIGHTRED);
+			bar(390,10,485,40);
+			puthz(395,15,"注意事项",24,20,YELLOW);
+			delay(200);
+			clrmous(MouseX,MouseY);
+			zhuyi(func,func_sport);
+			break;
+		}
+		
+		if(mouse_press(180,10,230,40)==2)
+		  	MouseS=1;
+		if(mouse_press(180,10,230,40)==1)//播放动画 
+		{
+			setfillstyle(1,LIGHTRED);
+			bar(180,10,230,40);
+			puthz(185,15,"播放",24,20,YELLOW);
+			delay(200);
+			clrmous(MouseX,MouseY);
+			setfillstyle(1,YELLOW);
+			bar(180,10,230,40);
+			puthz(185,15,"播放",24,20,LIGHTRED);
+			sport2_act();
+			break;
+		}
+		if(mouse_press(70,10,120,40)==2)
+		  	MouseS=1;
+		if(mouse_press(70,10,120,40)==1)//返回 
+		{
+			setfillstyle(1,LIGHTRED);
+			bar(70,10,120,40);
+			puthz(75,15,"返回",24,20,YELLOW);
+			*func=5;
+			return;
+		}
+	}
+}
+
+
+
+void sport2_act()
+{
+	int i=0;
+	setbkcolor(WHITE);
+	setviewport(0,0,640,480,0);
+	for (i=0;i<50;i++)
+	{
+		setfillstyle(1,BROWN);
+		setcolor(BROWN);
+		circle(320,120,35);
+		floodfill(321,121,BROWN);
+		setlinestyle(0,0,3);
+		line(320-4,155,320-4,265);
+		line(320-2,155,320-2,265);
+		line(320,155,320,265);
+		line(320+2,155,320+2,265);
+		line(320+4,155,320+4,265);//身体 
+		line(320-4,265-4,300-4-i,375-i);
+		line(320-2,265-2,300-2-i,375-i);
+		line(320,265,300-i,375-i);
+		ellipse(285-i,375-i,0,180,15,10);
+		line(270-i,375-i,300-i,375-i);//左腿 
+		line(320,265,340+i,375-i);
+		line(320+2,265,340+2+i,375-i);
+		line(320+4,265,340+4+i,375-i);
+		line(320+6,265,340+6+i,375-i);
+		ellipse(355+i,375-i,0,180,15,10);
+		line(340+i,375-i,370+i,375-i);//右腿 
+		line(320,180,285-2*i,290-2*i);
+		line(320,180-2,285-2*i,290-2-2*i);
+		line(320,180-4,285-2*i,290-4-2*i);
+		fillellipse(285-2*i,290-2*i,5,5);//左胳膊
+		line(320,180,355+2*i,290-2*i);
+		line(320,180-2,355+2*i,290-2-2*i);
+		line(320,180-4,355+2*i,290-4-2*i);
+		fillellipse(355+2*i,290-2*i,5,5);//右胳膊
+         delay(100); 
+         setfillstyle(1,WHITE);
+		bar(90,55,540,380);
+	}
+	for (i=0;i<30;i++)
+	{
+		setfillstyle(1,BROWN);
+		setcolor(BROWN);
+		circle(320,120,35);
+		floodfill(321,121,BROWN);
+		setlinestyle(0,0,3);
+		line(320-4,155,320-4,265);
+		line(320-2,155,320-2,265);
+		line(320,155,320,265);
+		line(320+2,155,320+2,265);
+		line(320+4,155,320+4,265);//身体 
+		line(320-4,265-4,300-4-60-i,375-60-i);
+		line(320-2,265-2,300-2-60-i,375-60-i);
+		line(320,265,300-60-i,375-60-i);
+		ellipse(285-60-i,375-60-i,0,180,15,10);
+		line(270-60-i,375-60-i,300-60-i,375-60-i);//左腿 
+		line(320,265,340+60+i,375-60-i);
+		line(320+2,265,340+2+60+i,375-60-i);
+		line(320+4,265,340+4+60+i,375-60-i);
+		line(320+6,265,340+6+60+i,375-60-i);
+		ellipse(355+60+i,375-60-i,0,180,15,10);
+		line(340+60+i,375-60-i,370+60+i,375-60-i);//右腿 
+		line(320,180,285-120+2*i,290-120-2*i);
+		line(320,180-2,285-120+2*i,290-2-120-2*i);
+		line(320,180-4,285-120+2*i,290-4-120-2*i);
+		fillellipse(285-120+2*i,290-120-2*i,5,5);//左胳膊
+		line(320,180,355+120-2*i,290-120-2*i);
+		line(320,180-2,355+120-2*i,290-2-120-2*i);
+		line(320,180-4,355+120-2*i,290-4-120-2*i);
+		fillellipse(355+120-2*i,290-120-2*i,5,5);//右胳膊
+         delay(100); 
+         setfillstyle(1,WHITE);
+		bar(90,55,540,380);
+	}
+	
+	for (i=0;i<30;i++)
+	{
+		setfillstyle(1,BROWN);
+		setcolor(BROWN);
+		circle(320,120,35);
+		floodfill(321,121,BROWN);
+		setlinestyle(0,0,3);
+		line(320-4,155,320-4,265);
+		line(320-2,155,320-2,265);
+		line(320,155,320,265);
+		line(320+2,155,320+2,265);
+		line(320+4,155,320+4,265);//身体 
+		line(320-4,265-4,300-4-90+i,375-90+i);
+		line(320-2,265-2,300-2-90+i,375-90+i);
+		line(320,265,300-90+i,375-90+i);
+		ellipse(285-90+i,375-90+i,0,180,15,10);
+		line(270-90+i,375-90+i,300-90+i,375-90+i);//左腿 
+		line(320,265,340+90-i,375-90+i);
+		line(320+2,265,340+2+90-i,375-90+i);
+		line(320+4,265,340+4+90-i,375-90+i);
+		line(320+6,265,340+6+90-i,375-90+i);
+		ellipse(355+90-i,375-90+i,0,180,15,10);
+		line(340+90-i,375-90+i,370+90-i,375-90+i);//右腿 
+		line(320,180,285-60-2*i,290-180+2*i);
+		line(320,180-2,285-60-2*i,290-2-180+2*i);
+		line(320,180-4,285-60-2*i,290-4-180+2*i);
+		fillellipse(285-60-2*i,290-180+2*i,5,5);//左胳膊
+		line(320,180,355+60+2*i,290-180+2*i);
+		line(320,180-2,355+60+2*i,290-2-180+2*i);
+		line(320,180-4,355+60+2*i,290-4-180+2*i);
+		fillellipse(355+60+2*i,290-180+2*i,5,5);//右胳膊
+         delay(100); 
+         setfillstyle(1,WHITE);
+		bar(90,55,540,380);
+	}
+	for (i=0;i<50;i++)
+	{
+		setfillstyle(1,BROWN);
+		setcolor(BROWN);
+		circle(320,120,35);
+		floodfill(321,121,BROWN);
+		setlinestyle(0,0,3);
+		line(320-4,155,320-4,265);
+		line(320-2,155,320-2,265);
+		line(320,155,320,265);
+		line(320+2,155,320+2,265);
+		line(320+4,155,320+4,265);//身体 
+		line(320-4,265-4,300-4-60+i,375-60+i);
+		line(320-2,265-2,300-2-60+i,375-60+i);
+		line(320,265,300-60+i,375-60+i);
+		ellipse(285-60+i,375-60+i,0,180,15,10);
+		line(270-60+i,375-60+i,300-60+i,375-60+i);//左腿 
+		line(320,265,340+60-i,375-60+i);
+		line(320+2,265,340+2+60-i,375-60+i);
+		line(320+4,265,340+4+60-i,375-60+i);
+		line(320+6,265,340+6+60-i,375-60+i);
+		ellipse(355+60-i,375-60+i,0,180,15,10);
+		line(340+60-i,375-60+i,370+60-i,375-60+i);//右腿 
+		line(320,180,285-120+2*i,290-120+2*i);
+		line(320,180-2,285-120+2*i,290-2-120+2*i);
+		line(320,180-4,285-120+2*i,290-4-120+2*i);
+		fillellipse(285-120+2*i,290-120+2*i,5,5);//左胳膊
+		line(320,180,355+120-2*i,290-120+2*i);
+		line(320,180-2,355+120-2*i,290-2-120+2*i);
+		line(320,180-4,355+120-2*i,290-4-120+2*i);
+		fillellipse(355+120-2*i,290-120+2*i,5,5);//右胳膊
+        delay(100); 
+        setfillstyle(1,WHITE);
+		bar(90,55,540,380);
+	}
+}
+void sport3_main(int *func, int *func_sport)
+{
+	cleardevice();
+	clrmous(MouseX,MouseY);
+	newmouse(&MouseX,&MouseY,&press);
+	bg_sport3_began();
+	setfillstyle(1,YELLOW);
+	bar(70,10,120,40);
+	puthz(75,15,"返回",24,20,LIGHTRED);
+	setfillstyle(1,YELLOW);
+	bar(180,10,230,40);
+	puthz(185,15,"播放",24,20,LIGHTRED);
+	setfillstyle(1,YELLOW);
+	bar(290,10,340,40);
+	puthz(295,15,"视频",24,20,LIGHTRED);
+	setfillstyle(1,YELLOW);
+	bar(390,10,485,40);
+	puthz(395,15,"注意事项",24,20,LIGHTRED);
+	clrmous(MouseX,MouseY);
+	newmouse(&MouseX,&MouseY,&press);
+	while(1)
+	{
+		newmouse(&MouseX,&MouseY,&press);
+		if(MouseS!=0)  
+	      	MouseS=0;	
+		if(mouse_press(390,10,485,40)==2)
+		  	MouseS=1;
+		if(mouse_press(390,10,485,40)==1)//播放动画 
+		{
+			setfillstyle(1,LIGHTRED);
+			bar(390,10,485,40);
+			puthz(395,15,"注意事项",24,20,YELLOW);
+			delay(200);
+			clrmous(MouseX,MouseY);
+			zhuyi(func,func_sport);
+			break;
+		}
+		
+		if(mouse_press(180,10,230,40)==2)
+		  	MouseS=1;
+		if(mouse_press(180,10,230,40)==1)//播放动画 
+		{
+			setfillstyle(1,LIGHTRED);
+			bar(180,10,230,40);
+			puthz(185,15,"播放",24,20,YELLOW);
+			delay(200);
+			clrmous(MouseX,MouseY);
+			setfillstyle(1,YELLOW);
+			bar(180,10,230,40);
+			puthz(185,15,"播放",24,20,LIGHTRED);
+			sport3_act();
+			break;
+		}
+		if(mouse_press(70,10,120,40)==2)
+		  	MouseS=1;
+		if(mouse_press(70,10,120,40)==1)//返回 
+		{
+			setfillstyle(1,LIGHTRED);
+			bar(70,10,120,40);
+			puthz(75,15,"返回",24,20,YELLOW);
+			*func=5;
+			return;
+		}
+	}
+}
+
+void sport3_act()
+{
+	int i=0;
+	setbkcolor(WHITE);
+	setviewport(0,0,640,480,0);
+	for (i=0;i<27;i++)
+	{
+		setfillstyle(1,BROWN);
+		setcolor(BROWN);
+		circle(200+i,260-i,35);
+		floodfill(201+i,261-i,BROWN);//头 
+		setlinestyle(0,0,3);
+		line(230+i,265-6-i,340,270-6);
+		line(230+i,265-4-i,340,270-4);
+		line(230+i,265-2-i,340,270-2);
+		line(230+i,265-i,340,270);
+		line(230+i,265+2-i,340,270+2);
+		line(230+i,265+4-i,340,270+4);
+		line(230+i,265+6-i,340,270+6);//上身体 
+		line(340,270-4,384,268-4);
+		line(340,270-2,384,268-2);
+		line(340,270,384,268);
+		line(340,270+2,384,268+2);
+		line(340,270+4,384,268+4);//下身体 
+		line(384,268-4,425,190-4);
+		line(384,268-2,425,190-2);
+		line(384,268,425,190);
+		line(384,268+2,425,190+2);
+		line(384,268+4,425,190+4);//
+		//line(425,190-4,485,225-4);
+		line(425,190-2,500,235-2);
+		line(425,190,500,235);
+		line(425,190+2,500,235+2);
+		//line(425,190+4,485,225+4);//左腿 
+		line(384,268-4,445,235-4);
+		line(384,268-2,445,235-2);
+		line(384,268,445,235);
+		line(384,268+2,445,235+2);
+		line(384,268+4,445,235+4);//
+		//line(445,235-4,485,225-4);
+		line(445,235-2,500,285-2);
+		line(445,235,500,285);
+		line(445,235+2,500,285+2);
+		//line(445,235+4,485,225+4);//右腿 
+		line(280+i,275-i,245+i,205-i);
+		line(280-2+i,275-i,245-2+i,205-i);
+		line(280+2+i,275-i,245+2+i,205-i);//左胳膊
+		line(245+i,205-i,210+i,230-i);
+		line(245-2+i,205-i,210-2+i,230-i);
+		line(245+2+i,205-i,210+2+i,230-i);//左胳膊
+		line(280+i,275-i,245+i,329-i);
+		line(280-2+i,275-i,245-2+i,329-i);
+		line(280+2+i,275-i,245+2+i,329-i);//左胳膊
+		line(245+i,329-i,210+i,290-i);
+		line(245-2+i,329-i,210-2+i,290-i);
+		line(245+2+i,329-i,210+2+i,290-i);//左胳膊
+		delay(100); 
+        setfillstyle(1,WHITE);
+		bar(90,55,540,380);
+	}
+	for (i=0;i<22;i++)
+	{
+		setfillstyle(1,BROWN);
+		setcolor(BROWN);
+		circle(200+26+i,260-26-2*i,35);
+		floodfill(201+26+i,261-26-2*i,BROWN);//头 
+		setlinestyle(0,0,3);
+		line(230+23+i,265-6-23-2*i,340,270-6);
+		line(230+23+i,265-4-23-2*i,340,270-4);
+		line(230+23+i,265-2-23-2*i,340,270-2);
+		line(230+23+i,265-23-2*i,340,270);
+		line(230+23+i,265+2-23-2*i,340,270+2);
+		line(230+23+i,265+4-23-2*i,340,270+4);
+		line(230+23+i,265+6-23-2*i,340,270+6);//上身体 
+		line(340,270-4,384,268-4);
+		line(340,270-2,384,268-2);
+		line(340,270,384,268);
+		line(340,270+2,384,268+2);
+		line(340,270+4,384,268+4);//下身体 
+		line(384,268-4,425,190-4);
+		line(384,268-2,425,190-2);
+		line(384,268,425,190);
+		line(384,268+2,425,190+2);
+		line(384,268+4,425,190+4);//
+		//line(425,190-4,485,225-4);
+		line(425,190-2,500,235-2);
+		line(425,190,500,235);
+		line(425,190+2,500,235+2);
+		//line(425,190+4,485,225+4);//左腿 
+		line(384,268-4,445,235-4);
+		line(384,268-2,445,235-2);
+		line(384,268,445,235);
+		line(384,268+2,445,235+2);
+		line(384,268+4,445,235+4);//
+		//line(445,235-4,485,225-4);
+		line(445,235-2,500,285-2);
+		line(445,235,500,285);
+		line(445,235+2,500,285+2);
+		//line(445,235+4,485,225+4);//右腿 
+		line(280+10+i,275-10-2*i,245+26+2*i,205-26-2*i);
+		line(280-2+10+i,275-10-2*i,245-2+26+2*i,205-26-2*i);
+		line(280+2+10+i,275-10-2*i,245+2+26+2*i,205-26-2*i);//上胳膊
+		line(245+26+2*i,205-26-2*i,210+26+i,230-26-2*i);
+		line(245-2+26+2*i,205-26-2*i,210-2+26+i,230-26-2*i);
+		line(245+2+26+2*i,205-26-2*i,210+2+26+i,230-26-2*i);//上胳膊
+		line(280+10+i,275-10-2*i,245+5+i,329-5-2*i);
+		line(280-2+10+i,275-10-2*i,245-2+5+i,329-5-2*i);
+		line(280+2+10+i,275-10-2*i,245+2+5+i,329-5-2*i);//下胳膊
+		line(245+5+i,329-5-2*i,210+26+i,290-26-2*i);
+		line(245-2+5+i,329-5-2*i,210-2+26+i,290-26-2*i);
+		line(245+2+5+i,329-5-2*i,210+2+26+i,290-26-2*i);//下胳膊
+		delay(100); 
+        setfillstyle(1,WHITE);
+		bar(90,55,540,380);
+	}
+	
+	for (i=0;i<27;i++)
+	{
+		setfillstyle(1,BROWN);
+		setcolor(BROWN);
+		circle(200+26+25+i,260-26-50-i,35);
+		floodfill(201+26+25+i,261-26-50-i,BROWN);//头 
+		setlinestyle(0,0,3);
+		line(230+26+15+i,265-6-26-40-i,340,270-6);
+		line(230+26+15+i,265-4-26-40-i,340,270-4);
+		line(230+26+15+i,265-2-26-40-i,340,270-2);
+		line(230+26+15+i,265-26-40-i,340,270);
+		line(230+26+15+i,265+2-26-40-i,340,270+2);
+		line(230+26+15+i,265+4-26-40-i,340,270+4);
+		line(230+26+15+i,265+6-26-40-i,340,270+6);//上身体 
+		line(340,270-4,384,268-4);
+		line(340,270-2,384,268-2);
+		line(340,270,384,268);
+		line(340,270+2,384,268+2);
+		line(340,270+4,384,268+4);//下身体 
+		line(384,268-4,425,190-4);
+		line(384,268-2,425,190-2);
+		line(384,268,425,190);
+		line(384,268+2,425,190+2);
+		line(384,268+4,425,190+4);//
+		//line(425,190-4,485,225-4);
+		line(425,190-2,500,235-2);
+		line(425,190,500,235);
+		line(425,190+2,500,235+2);
+		//line(425,190+4,485,225+4);//左腿 
+		line(384,268-4,445,235-4);
+		line(384,268-2,445,235-2);
+		line(384,268,445,235);
+		line(384,268+2,445,235+2);
+		line(384,268+4,445,235+4);//
+		//line(445,235-4,485,225-4);
+		line(445,235-2,500,285-2);
+		line(445,235,500,285);
+		line(445,235+2,500,285+2);
+		//line(445,235+4,485,225+4);//右腿 
+		line(280+25+i,275-10-50+i,245+26+50+i,205-26-50+i);
+		line(280-2+25+i,275-10-50+i,245-2+26+50+i,205-26-50+i);
+		line(280+2+25+i,275-10-50+i,245+2+26+50+i,205-26-50+i);//上胳膊
+		line(245+26+50+i,205-26-50+i,210+26+35+i,230-26-40-i);
+		line(245-2+26+50+i,205-26-50+i,210-2+26+35+i,230-26-40-i);
+		line(245+2+26+50+i,205-26-50+i,210+2+26+35+i,230-26-40-i);//上胳膊
+		line(280+25+i,275-10-50+i,245+5+25,329-5-50-i);
+		line(280-2+25+i,275-10-50+i,245-2+5+25,329-5-50-i);
+		line(280+2+25+i,275-10-50+i,245+2+5+25,329-5-50-i);//下胳膊
+		line(245+5+25,329-5-50-i,210+26+15+i,290-26-50-i);
+		line(245-2+5+25,329-5-50-i,210-2+26+15+i,290-26-50-i);
+		line(245+2+5+25,329-5-50-i,210+2+26+15+i,290-26-50-i);//下胳膊
+		delay(100); 
+        setfillstyle(1,WHITE);
+		bar(90,55,540,380);
+	}
+}
+
+void sport4_main(int *func,int *func_sport)
+{
+	cleardevice();
+	clrmous(MouseX,MouseY);
+	newmouse(&MouseX,&MouseY,&press);
+	bg_sport4_began();
+	setfillstyle(1,YELLOW);
+	bar(70,10,120,40);
+	puthz(75,15,"返回",24,20,LIGHTRED);
+	setfillstyle(1,YELLOW);
+	bar(180,10,230,40);
+	puthz(185,15,"播放",24,20,LIGHTRED);
+	setfillstyle(1,YELLOW);
+	bar(290,10,340,40);
+	puthz(295,15,"视频",24,20,LIGHTRED);
+	setfillstyle(1,YELLOW);
+	bar(390,10,485,40);
+	puthz(395,15,"注意事项",24,20,LIGHTRED);
+	clrmous(MouseX,MouseY);
+	newmouse(&MouseX,&MouseY,&press);
+	while(1)
+	{
+		newmouse(&MouseX,&MouseY,&press);
+		if(MouseS!=0)  
+	      	MouseS=0;	
+		if(mouse_press(390,10,485,40)==2)
+		  	MouseS=1;
+		if(mouse_press(390,10,485,40)==1)//播放动画 
+		{
+			setfillstyle(1,LIGHTRED);
+			bar(390,10,485,40);
+			puthz(395,15,"注意事项",24,20,YELLOW);
+			delay(200);
+			clrmous(MouseX,MouseY);
+			zhuyi(func,func_sport);
+			break;
+		}
+		
+		if(mouse_press(180,10,230,40)==2)
+		  	MouseS=1;
+		if(mouse_press(180,10,230,40)==1)//播放动画 
+		{
+			setfillstyle(1,LIGHTRED);
+			bar(180,10,230,40);
+			puthz(185,15,"播放",24,20,YELLOW);
+			delay(200);
+			clrmous(MouseX,MouseY);
+			setfillstyle(1,YELLOW);
+			bar(180,10,230,40);
+			puthz(185,15,"播放",24,20,LIGHTRED);
+			sport4_act();
+			break;
+		}
+		if(mouse_press(70,10,120,40)==2)
+		  	MouseS=1;
+		if(mouse_press(70,10,120,40)==1)//返回 
+		{
+			setfillstyle(1,LIGHTRED);
+			bar(70,10,120,40);
+			puthz(75,15,"返回",24,20,YELLOW);
+			*func=5;
+			return;
+		}
+	}
+}
+
+void sport4_act()
+{
+	int i=0;
+	setbkcolor(WHITE);
+	setviewport(0,0,640,480,0);
+	for (i=0;i<30;i++)
+	{
+		setcolor(LIGHTRED);
+		ellipse(320,230,0,180,95-i,5*i);//绳子 在后 
+		setfillstyle(1,BROWN);
+		setcolor(BROWN);
+		circle(320,120,35);
+		floodfill(321,121,BROWN);
+		setlinestyle(0,0,3);
+		line(320-4,155,320-4,265);
+		line(320-2,155,320-2,265);
+		line(320,155,320,265);
+		line(320+2,155,320+2,265);
+		line(320+4,155,320+4,265);//身体 
+		line(320-4,265-4,300-4,375);
+		line(320-2,265-2,300-2,375);
+		line(320,265,300,375);
+		ellipse(285,375,0,180,15,10);
+		line(270,375,300,375);//左腿 
+		line(320,265,340,375);
+		line(320+2,265,340+2,375);
+		line(320+4,265,340+4,375);
+		line(320+6,265,340+6,375);
+		ellipse(355,375,0,180,15,10);
+		line(340,375,370,375);//右腿 
+		line(320,180,225+i,230);
+		line(320,180-2,225+i,230-2);
+		line(320,180-4,225+i,230-4);
+		fillellipse(225+i,230,5,5);//左胳膊
+		line(320,180,415-i,230);
+		line(320,180-2,415-i,230-2);
+		line(320,180-4,415-i,230-4);
+		fillellipse(415-i,230,5,5);//右胳膊
+				
+         delay(50); 
+         setfillstyle(1,WHITE);
+		bar(90,55,540,380);
+	}
+
+	for (i=0;i<30;i++)
+	{	
+		setfillstyle(1,BROWN);
+		setcolor(BROWN);
+		circle(320,120,35);
+		floodfill(321,121,BROWN);
+		setlinestyle(0,0,3);
+		line(320-4,155,320-4,265);
+		line(320-2,155,320-2,265);
+		line(320,155,320,265);
+		line(320+2,155,320+2,265);
+		line(320+4,155,320+4,265);//身体 
+		line(320-4,265-4,300-4,375);
+		line(320-2,265-2,300-2,375);
+		line(320,265,300,375);
+		ellipse(285,375,0,180,15,10);
+		line(270,375,300,375);//左腿 
+		line(320,265,340,375);
+		line(320+2,265,340+2,375);
+		line(320+4,265,340+4,375);
+		line(320+6,265,340+6,375);
+		ellipse(355,375,0,180,15,10);
+		line(340,375,370,375);//右腿 
+		line(320,180,225+30-i,230);
+		line(320,180-2,225+30-i,230-2);
+		line(320,180-4,225+30-i,230-4);
+		fillellipse(225+30-i,230,5,5);//左胳膊
+		line(320,180,415-30+i,230);
+		line(320,180-2,415-30+i,230-2);
+		line(320,180-4,415-30+i,230-4);
+		fillellipse(415-30+i,230,5,5);//右胳膊
+		setcolor(LIGHTRED);
+		ellipse(320,230,0,180,95-30+i,150-5*i);//绳子 在前
+
+		
+         delay(50); 
+         setfillstyle(1,WHITE);
+		bar(90,55,540,380);
+	}
+	
+	for (i=0;i<30;i++)
+	{
+		setfillstyle(1,BROWN);
+		setcolor(BROWN);
+		circle(320,120,35);
+		floodfill(321,121,BROWN);
+		setlinestyle(0,0,3);
+		line(320-4,155,320-4,265);
+		line(320-2,155,320-2,265);
+		line(320,155,320,265);
+		line(320+2,155,320+2,265);
+		line(320+4,155,320+4,265);//身体 
+		line(320-4,265-4,300-4-i,375-3*i);
+		line(320-2,265-2,300-2-i,375-3*i);
+		line(320,265,300-i,375-3*i);
+		ellipse(285-i,375-3*i,0,180,15,10);
+		line(270-i,375-3*i,300-i,375-3*i);//左腿 
+		line(320,265,340+i,375-3*i);
+		line(320+2,265,340+2+i,375-3*i);
+		line(320+4,265,340+4+i,375-3*i);
+		line(320+6,265,340+6+i,375-3*i);
+		ellipse(355+i,375-3*i,0,180,15,10);
+		line(340+i,375-3*i,370+i,375-3*i);//右腿 
+		line(320,180,225,230);
+		line(320,180-2,225,230-2);
+		line(320,180-4,225,230-4);
+		fillellipse(225,230,5,5);//左胳膊
+		line(320,180,415,230);
+		line(320,180-2,415,230-2);
+		line(320,180-4,415,230-4);
+		fillellipse(415,230,5,5);//右胳膊
+		setcolor(LIGHTRED);
+		ellipse(320,230,180,360,95,4*i);//绳子 在前
+
+		
+         delay(50); 
+         setfillstyle(1,WHITE);
+		bar(90,55,540,380);
+	}
+	for (i=0;i<30;i++)
+	{
+		setcolor(LIGHTRED);
+		ellipse(320,230,180,360,95,120-4*i);//绳子 在后 
+		setfillstyle(1,BROWN);
+		setcolor(BROWN);
+		circle(320,120,35);
+		floodfill(321,121,BROWN);
+		setlinestyle(0,0,3);
+		line(320-4,155,320-4,265);
+		line(320-2,155,320-2,265);
+		line(320,155,320,265);
+		line(320+2,155,320+2,265);
+		line(320+4,155,320+4,265);//身体 
+		line(320-4,265-4,300-4-30+i,375-90+3*i);
+		line(320-2,265-2,300-2-30+i,375-90+3*i);
+		line(320,265,300-30+i,375-90+3*i);
+		ellipse(285-30+i,375-90+3*i,0,180,15,10);
+		line(270-30+i,375-90+3*i,300-30+i,375-90+3*i);//左腿 
+		line(320,265,340+30-i,375-90+3*i);
+		line(320+2,265,340+2+30-i,375-90+3*i);
+		line(320+4,265,340+4+30-i,375-90+3*i);
+		line(320+6,265,340+6+30-i,375-90+3*i);
+		ellipse(355+30-i,375-90+3*i,0,180,15,10);
+		line(340+30-i,375-90+3*i,370+30-i,375-90+3*i);//右腿 		
+		line(320,180,225,230);
+		line(320,180-2,225,230-2);
+		line(320,180-4,225,230-4);
+		fillellipse(225,230,5,5);//左胳膊
+		line(320,180,415,230);
+		line(320,180-2,415,230-2);
+		line(320,180-4,415,230-4);
+		fillellipse(415,230,5,5);//右胳膊
+			
+         delay(50); 
+         setfillstyle(1,WHITE);
+		bar(90,55,540,380);
+	}
+		
+	
+}
